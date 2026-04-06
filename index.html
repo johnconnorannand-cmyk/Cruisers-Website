@@ -628,6 +628,50 @@ footer {
   .gallery-grid { grid-template-columns: 1fr; }
 }
 
+
+/* ════════ VOLUME TOGGLE ════════ */
+.volume-btn {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(246,243,236,0.4);
+  background: rgba(7,7,15,0.45);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  color: var(--cream);
+}
+.volume-btn:hover {
+  background: rgba(251,168,112,0.25);
+  border-color: var(--orange);
+}
+.volume-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+/* Mobile */
+@media (max-width: 768px) {
+  .volume-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -696,6 +740,21 @@ footer {
             type="video/mp4">
   </video>
   <div class="masthead-fade"></div>
+
+  <!-- Volume toggle -->
+  <button class="volume-btn" id="volume-btn" onclick="toggleVolume()" aria-label="Toggle sound">
+    <svg id="icon-muted" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    <svg id="icon-unmuted" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+  </button>
+
 </section>
 
 <!-- INFO STRIP -->
