@@ -112,6 +112,14 @@ nav.scrolled {
   opacity: 1 !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
+  border: 1.5px solid rgba(246,243,236,0.6);
+  padding: 8px 18px;
+  border-radius: 2px;
+  transition: border-color 0.2s ease, opacity 0.2s ease !important;
+}
+.nav-strava:hover {
+  border-color: var(--cream) !important;
+  opacity: 1 !important;
 }
 .nav-contact-btn:hover { background: #f0a060 !important; }
 .nav-hamburger {
@@ -615,9 +623,10 @@ footer {
   /* ── Nav ── */
   nav {
     padding: 16px 24px;
-    background: rgba(1,18,153,0.92) !important;
-    backdrop-filter: blur(12px);
+    background: var(--blue) !important;
+    backdrop-filter: none;
     height: 60px;
+    border-bottom: 2px solid rgba(251,168,112,0.3);
   }
   .nav-logo { font-size: 22px; }
   .nav-links {
@@ -669,7 +678,24 @@ footer {
   footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
 
   /* ── Modal ── */
-  .modal-inner { padding: 40px 24px 32px; }
+  .modal-inner {
+    padding: 40px 24px 32px;
+    margin: 0 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-inner {
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    margin: 0;
+    padding: 40px 24px 48px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
 }
 @media (max-width: 480px) {
   .gallery-grid { grid-template-columns: 1fr; }
@@ -892,7 +918,7 @@ footer {
 <footer>
   <div class="footer-logo">CRuISERS</div>
   <ul class="footer-links">
-    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
     <li><a href="#" onclick="openContact(event)">Contact</a></li>
   </ul>
   <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2023</div>
@@ -903,9 +929,11 @@ footer {
 (function() {
   var video = document.getElementById('hero-video');
   var source = document.getElementById('video-source');
-  if (video && source && window.innerWidth <= 768) {
-    source.src = 'assets/video/hero-mobile.mp4';
+  if (!video || !source) return;
+  if (window.innerWidth <= 768) {
+    source.setAttribute('src', 'assets/video/hero-mobile.mp4');
     video.load();
+    video.play().catch(function(){});
   }
 })();
 
