@@ -644,16 +644,18 @@ footer {
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
 
-  /* ── Masthead mobile ── */
+  /* ── Masthead mobile — 4:3 width-based fill ── */
   .masthead {
-    min-height: 500px;
-    /* height set by JS below */
+    height: auto !important;
+    margin-top: 60px !important;
+    padding-top: 0 !important;
   }
   .masthead-video {
-    object-fit: cover;
-    object-position: center center;
-    width: 100%;
-    height: 100%;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: fill !important;
+    display: block;
   }
 
   /* ── Info strip ── */
@@ -1015,17 +1017,8 @@ function toggleVolume() {
 
 // Mobile masthead sizing — on mobile use 16:9 ratio so video shows fully
 function setMastheadHeight() {
-  var masthead = document.querySelector('.masthead');
-  var nav = document.querySelector('nav');
-  if (!masthead) return;
-  if (window.innerWidth <= 768) {
-    // Mobile — fill exact visible screen below nav
-    var viewH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    var navH = nav ? nav.offsetHeight : 60;
-    masthead.style.height = (viewH - navH) + 'px';
-    masthead.style.marginTop = navH + 'px';
-    masthead.style.paddingTop = '0';
-  } else {
+  // Mobile sizing handled by CSS — 4:3 natural height
+} else {
     // Desktop — reset any mobile overrides
     masthead.style.height = '';
     masthead.style.marginTop = '';
