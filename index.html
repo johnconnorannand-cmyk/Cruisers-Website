@@ -839,6 +839,28 @@ footer {
   color: rgba(246,243,236,0.3) !important;
 }
 
+
+/* Mobile nav close button */
+.nav-close {
+  display: none;
+  background: none;
+  border: 1.5px solid rgba(246,243,236,0.3);
+  color: var(--cream);
+  font-size: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+  margin-bottom: 16px;
+}
+.nav-close:hover { border-color: var(--orange); color: var(--orange); }
+@media (max-width: 768px) {
+  .nav-close { display: flex; }
+}
+
 </style>
 </head>
 <body>
@@ -887,6 +909,7 @@ footer {
 <nav id="nav">
   <a href="#" class="nav-logo">CRuISERS</a>
   <ul class="nav-links" id="nav-links">
+    <li><button class="nav-close" onclick="toggleNav()">✕</button></li>
     <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
     <li><a href="#" class="nav-contact-btn" onclick="openContact(event)">Contact</a></li>
   </ul>
