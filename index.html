@@ -644,20 +644,18 @@ footer {
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
 
-  /* ── Masthead — full 4:3 video, no crop ── */
+  /* ── Masthead mobile ── */
   .masthead {
     height: 100dvh;
     height: 100svh;
     min-height: 500px;
     padding-top: 60px;
-    background: var(--blue);
   }
   .masthead-video {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
     width: 100%;
     height: 100%;
-    background: var(--blue);
   }
 
   /* ── Info strip ── */
@@ -757,12 +755,7 @@ footer {
   background-attachment: scroll;
 }
 .photo-bg-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(1,18,153,0.72);
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 .photo-bg-wrap > * {
   position: relative;
