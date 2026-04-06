@@ -473,7 +473,7 @@ nav.scrolled {
 .disclaimer-text {
   font-size: 11px;
   line-height: 1.8;
-  color: rgba(1,18,153,0.65);
+  color: rgba(246,243,236,0.75);
   letter-spacing: 0.02em;
 }
 
@@ -504,7 +504,7 @@ footer {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: rgba(246,243,236,0.7);
   transition: color 0.2s ease;
 }
 .footer-links a:hover { color: var(--blue); }
@@ -644,18 +644,20 @@ footer {
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
 
-  /* ── Masthead — video starts BELOW the nav ── */
+  /* ── Masthead — full 4:3 video, no crop ── */
   .masthead {
     height: 100dvh;
     height: 100svh;
     min-height: 500px;
-    padding-top: 60px; /* pushes video below nav */
+    padding-top: 60px;
+    background: var(--blue);
   }
   .masthead-video {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center center;
     width: 100%;
     height: 100%;
+    background: var(--blue);
   }
 
   /* ── Info strip ── */
@@ -743,6 +745,64 @@ footer {
     width: 40px;
     height: 40px;
   }
+}
+
+
+/* ════════ PHOTO BACKGROUND WRAPPER ════════ */
+.photo-bg-wrap {
+  position: relative;
+  background-image: url('assets/images/bg.jpg');
+  background-size: cover;
+  background-position: center 40%;
+  background-attachment: scroll;
+}
+.photo-bg-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1,18,153,0.72);
+  z-index: 0;
+  pointer-events: none;
+}
+.photo-bg-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+/* Gallery section — transparent bg now handled by wrapper */
+.gallery {
+  background: transparent !important;
+}
+/* Disclaimer — transparent, cream text */
+.disclaimer {
+  background: transparent !important;
+  border-top: 1px solid rgba(246,243,236,0.15);
+}
+.disclaimer-label {
+  color: var(--orange) !important;
+  opacity: 1 !important;
+}
+.disclaimer-text {
+  font-size: 11px;
+  line-height: 1.8;
+  color: rgba(246,243,236,0.75);
+  letter-spacing: 0.02em;
+}
+/* Footer — transparent, cream text */
+footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(246,243,236,0.15) !important;
+}
+.footer-logo {
+  color: var(--cream) !important;
+}
+.footer-links a {
+  color: rgba(246,243,236,0.6) !important;
+}
+.footer-links a:hover {
+  color: var(--orange) !important;
+}
+.footer-meta {
+  color: rgba(246,243,236,0.3) !important;
 }
 
 </style>
@@ -847,8 +907,11 @@ footer {
   </div>
 </section>
 
+<!-- Bottom photo background wrapper -->
+<div class="photo-bg-wrap">
+
 <!-- SECTION 4: GALLERY -->
-<section class="gallery" id="gallery" style="background-image: url('assets/images/bg.jpg'); background-size: cover; background-position: center 40%; position: relative;">
+<section class="gallery" id="gallery">
   <div class="gallery-header">
     <div class="gallery-title">RIDES</div>
     <div class="gallery-sub">Click to explore</div>
@@ -924,6 +987,8 @@ footer {
   </ul>
   <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2023</div>
 </footer>
+
+</div><!-- /photo-bg-wrap -->
 
 <script>
 // Mobile video swap fallback for iOS Safari
