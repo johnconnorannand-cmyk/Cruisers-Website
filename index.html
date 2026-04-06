@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cruisers — Denver</title>
+<title>Cruisers — Ride Together. Every Tuesday.</title>
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -11,16 +11,16 @@
 <!-- Open Graph / Share thumbnail -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cruisers.cc">
-<meta property="og:title" content="Cruisers — Denver">
-<meta property="og:description" content="Denver's weekly ride crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
+<meta property="og:title" content="Cruisers — Denver's Weekly Ride Crew">
+<meta property="og:description" content="Denver's Weekly Ride Crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
 <meta property="og:image" content="assets/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cruisers — Denver">
-<meta name="twitter:description" content="Denver's weekly ride crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
+<meta name="twitter:title" content="Cruisers — Denver's Weekly Ride Crew">
+<meta name="twitter:description" content="Denver's Weekly Ride Crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
 <meta name="twitter:image" content="assets/images/og-image.jpg">
 
 <style>
@@ -603,7 +603,14 @@ footer {
 
 /* ════════ MOBILE ════════ */
 @media (max-width: 768px) {
-  nav { padding: 16px 24px; }
+  /* ── Nav ── */
+  nav {
+    padding: 16px 24px;
+    background: rgba(1,18,153,0.92) !important;
+    backdrop-filter: blur(12px);
+    height: 60px;
+  }
+  .nav-logo { font-size: 22px; }
   .nav-links {
     display: none;
     position: fixed;
@@ -618,11 +625,13 @@ footer {
   .nav-links.open { display: flex; }
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
-  /* Mobile masthead — scale video to show full width without zoom */
+
+  /* ── Masthead — video starts BELOW the nav ── */
   .masthead {
-    height: 56.25vw; /* 16:9 ratio based on screen width */
-    min-height: 260px;
-    max-height: 480px;
+    height: 100dvh;
+    height: 100svh;
+    min-height: 500px;
+    padding-top: 60px; /* pushes video below nav */
   }
   .masthead-video {
     object-fit: cover;
@@ -630,17 +639,27 @@ footer {
     width: 100%;
     height: 100%;
   }
+
+  /* ── Info strip ── */
   .info-strip { padding: 16px 24px; gap: 8px; }
   .info-item { font-size: 16px; }
   .info-div { display: none; }
+
+  /* ── About ── */
   .about { grid-template-columns: 1fr; gap: 36px; padding: 64px 24px; }
+
+  /* ── Gallery ── */
   .gallery { padding: 64px 24px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
-  .lightbox-arrow.prev { left: -2px; }
-  .lightbox-arrow.next { right: -2px; }
+
+  /* ── Lightbox ── */
   .lightbox-body { padding: 24px 20px 20px; }
+
+  /* ── Disclaimer + Footer ── */
   .disclaimer { padding: 40px 24px; }
   footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+
+  /* ── Modal ── */
   .modal-inner { padding: 40px 24px 32px; }
 }
 @media (max-width: 480px) {
@@ -750,13 +769,7 @@ footer {
 <!-- SECTION 2: MASTHEAD -->
 <section class="masthead">
   <video class="masthead-video" id="hero-video" autoplay muted loop playsinline>
-    <!-- 4:3 mobile cut -->
-    <source src="assets/video/hero-mobile.mp4"
-            type="video/mp4"
-            media="(max-width: 768px)">
-    <!-- 16:9 desktop cut -->
-    <source src="assets/video/hero-desktop.mp4"
-            type="video/mp4">
+    <source id="video-source" src="assets/video/hero-desktop.mp4" type="video/mp4">
   </video>
   <div class="masthead-fade"></div>
 
@@ -877,6 +890,16 @@ footer {
 </footer>
 
 <script>
+// Mobile video swap — load correct cut based on screen width
+(function() {
+  var video = document.getElementById('hero-video');
+  var source = document.getElementById('video-source');
+  if (video && source && window.innerWidth <= 768) {
+    source.src = 'assets/video/hero-mobile.mp4';
+    video.load();
+  }
+})();
+
 // Volume toggle
 var videoMuted = true;
 function toggleVolume() {
