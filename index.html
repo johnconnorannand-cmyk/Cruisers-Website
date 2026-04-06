@@ -644,18 +644,30 @@ footer {
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
 
-  /* ── Masthead mobile — 4:3 width-based fill ── */
+  /* ── Masthead mobile — 4:3 snaps to info bar ── */
   .masthead {
     height: auto !important;
+    min-height: 0 !important;
     margin-top: 60px !important;
     padding-top: 0 !important;
+    overflow: hidden;
   }
   .masthead-video {
     position: relative !important;
+    inset: auto !important;
     width: 100% !important;
     height: auto !important;
     object-fit: fill !important;
     display: block;
+    margin: 0 !important;
+  }
+  .masthead-fade {
+    display: none;
+  }
+  .volume-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
   }
 
   /* ── Info strip ── */
