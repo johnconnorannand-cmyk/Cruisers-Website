@@ -882,12 +882,14 @@ footer {
 </div>
 
 <!-- NAV -->
+<!-- Mobile nav overlay — outside nav so it can go fullscreen -->
+<ul class="nav-links" id="nav-links">
+  <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
+  <li><a href="#" class="nav-contact-btn" onclick="openContact(event)">Contact</a></li>
+</ul>
+
 <nav id="nav">
   <a href="#" class="nav-logo">CRuISERS</a>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
-    <li><a href="#" class="nav-contact-btn" onclick="openContact(event)">Contact</a></li>
-  </ul>
   <div class="nav-hamburger" onclick="toggleNav()">
     <span></span><span></span><span></span>
   </div>
