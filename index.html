@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cruisers — Denver</title>
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- Open Graph / Share thumbnail -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cruisers.cc">
+<meta property="og:title" content="Cruisers — Denver">
+<meta property="og:description" content="Denver's weekly ride crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
+<meta property="og:image" content="assets/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cruisers — Denver">
+<meta name="twitter:description" content="Denver's weekly ride crew. Every Tuesday 5:30pm @ REI Denver. All bikes all levels.">
+<meta name="twitter:image" content="assets/images/og-image.jpg">
+
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
@@ -720,7 +739,7 @@ footer {
 <nav id="nav">
   <a href="#" class="nav-logo">CRuISERS</a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
     <li><a href="#" class="nav-contact-btn" onclick="openContact(event)">Contact</a></li>
   </ul>
   <div class="nav-hamburger" onclick="toggleNav()">
@@ -851,13 +870,33 @@ footer {
 <footer>
   <div class="footer-logo">CRuISERS</div>
   <ul class="footer-links">
-    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
     <li><a href="#" onclick="openContact(event)">Contact</a></li>
   </ul>
   <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2023</div>
 </footer>
 
 <script>
+// Volume toggle
+var videoMuted = true;
+function toggleVolume() {
+  var video = document.getElementById('hero-video');
+  var mutedIcon = document.getElementById('icon-muted');
+  var unmutedIcon = document.getElementById('icon-unmuted');
+  if (!video) return;
+  videoMuted = !videoMuted;
+  video.muted = videoMuted;
+  if (!videoMuted) {
+    video.volume = 0.5;
+    video.play();
+    mutedIcon.style.display = 'none';
+    unmutedIcon.style.display = 'block';
+  } else {
+    mutedIcon.style.display = 'block';
+    unmutedIcon.style.display = 'none';
+  }
+}
+
 // Mobile masthead sizing — on mobile use 16:9 ratio so video shows fully
 function setMastheadHeight() {
   var masthead = document.querySelector('.masthead');
