@@ -646,14 +646,12 @@ footer {
 
   /* ── Masthead mobile ── */
   .masthead {
-    height: 100dvh;
-    height: 100svh;
     min-height: 500px;
-    padding-top: 60px;
+    /* height set by JS below */
   }
   .masthead-video {
     object-fit: cover;
-    object-position: left center;
+    object-position: center center;
     width: 100%;
     height: 100%;
   }
@@ -1018,14 +1016,22 @@ function toggleVolume() {
 // Mobile masthead sizing — on mobile use 16:9 ratio so video shows fully
 function setMastheadHeight() {
   var masthead = document.querySelector('.masthead');
+  var nav = document.querySelector('nav');
   if (!masthead) return;
-  var w = window.innerWidth;
-  if (w <= 768) {
-    // 16:9 aspect ratio based on screen width — shows full video frame
-    var h = Math.round(w * (9/16));
-    h = Math.max(260, Math.min(h, 480));
-    masthead.style.height = h + 'px';
+  if (window.innerWidth <= 768) {
+    // Mobile — fill exact visible screen below nav
+    var viewH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    var navH = nav ? nav.offsetHeight : 60;
+    masthead.style.height = (viewH - navH) + 'px';
+    masthead.style.marginTop = navH + 'px';
+    masthead.style.paddingTop = '0';
   } else {
+    // Desktop — reset any mobile overrides
+    masthead.style.height = '';
+    masthead.style.marginTop = '';
+    masthead.style.paddingTop = '';
+  }
+} else {
     // Desktop — full viewport height
     masthead.style.height = '';
   }
