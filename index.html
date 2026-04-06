@@ -716,8 +716,12 @@ footer {
 /* Desktop — push bg image down to show warm golden tones */
 @media (min-width: 769px) {
   .photo-bg-wrap {
-    background-position: center 85%;
-  }
+  position: relative;
+  background-image: url('assets/images/bg.jpg');
+  background-size: cover;
+  background-position: 70% 30%;
+  background-attachment: scroll;
+}
 }
 
 
@@ -770,11 +774,16 @@ footer {
   position: relative;
   background-image: url('assets/images/bg.jpg');
   background-size: cover;
-  background-position: center 70%;
+  background-position: 70% 30%;
   background-attachment: scroll;
 }
 .photo-bg-wrap::before {
-  display: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,20,0.22);
+  z-index: 0;
+  pointer-events: none;
 }
 .photo-bg-wrap > * {
   position: relative;
