@@ -1208,8 +1208,18 @@ function submitForm() {
   })
   .then(function(res) {
     if (res.ok) {
+      document.getElementById('f-name').value = '';
+      document.getElementById('f-email').value = '';
+      document.getElementById('f-msg').value = '';
       btn.style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
+      var success = document.getElementById('form-success');
+      success.style.display = 'block';
+      setTimeout(function() {
+        success.style.display = 'none';
+        btn.textContent = 'Send it →';
+        btn.disabled = false;
+        btn.style.display = '';
+      }, 3000);
     } else {
       btn.textContent = 'Send it →';
       btn.disabled = false;
@@ -1224,27 +1234,6 @@ function submitForm() {
 }
 
 // ── Video audio — plays once on first user interaction ────────────────────────
-let audioUnlocked = false;
-function unlockAudio() {
-  if (audioUnlocked) return;
-  audioUnlocked = true;
-  const vid = document.getElementById('hero-video');
-  if (!vid) return;
-  vid.muted = false;
-  vid.loop = false;
-  vid.currentTime = 0;
-  vid.play().catch(() => { vid.muted = true; });
-  // After video ends, mute and loop silently
-  vid.addEventListener('ended', () => {
-    vid.muted = true;
-    vid.loop = true;
-    vid.play();
-  }, { once: true });
-  document.removeEventListener('click', unlockAudio);
-  document.removeEventListener('touchstart', unlockAudio);
-}
-document.addEventListener('click', unlockAudio);
-document.addEventListener('touchstart', unlockAudio);
 
 // ── Keyboard nav ──────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
