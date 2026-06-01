@@ -1228,7 +1228,8 @@ let audioUnlocked = false;
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
-  const vid = document.getElementById('masthead-vid');
+  const vid = document.getElementById('hero-video');
+  if (!vid) return;
   vid.muted = false;
   vid.loop = false;
   vid.currentTime = 0;
