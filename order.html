@@ -396,6 +396,50 @@ nav {
   color: var(--blue);
 }
 
+.venmo-note-preview {
+  background: rgba(1,18,153,0.06);
+  border: 1.5px solid rgba(1,18,153,0.18);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.venmo-note-preview-label {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 15px;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.venmo-note-preview-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--blue);
+  word-break: break-word;
+  min-height: 22px;
+  opacity: 0.5;
+}
+.venmo-note-preview-text.ready { opacity: 1; }
+.venmo-inline-copy {
+  display: none;
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 0;
+  background: transparent;
+  border: 1.5px solid rgba(1,18,153,0.3);
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.venmo-inline-copy.visible { display: block; }
+.venmo-inline-copy:hover { background: var(--blue); color: var(--cream); }
+.venmo-inline-copy.copied { background: var(--blue); color: var(--cream); }
+
 .venmo-btn {
   width: 100%;
   padding: 17px 0;
@@ -427,6 +471,101 @@ nav {
   text-align: center;
 }
 .form-error.show { display: block; }
+
+/* ════════ VENMO INTERSTITIAL ════════ */
+.venmo-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(1,18,153,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.venmo-modal.open { display: flex; }
+.venmo-modal-card {
+  background: var(--cream);
+  color: var(--blue);
+  border-radius: 8px;
+  padding: 40px 36px;
+  max-width: 420px;
+  width: 100%;
+}
+.venmo-modal-step {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(1,18,153,0.5);
+  margin-bottom: 10px;
+}
+.venmo-modal-title {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.venmo-modal-note {
+  background: #fff;
+  border: 1.5px solid rgba(1,18,153,0.18);
+  border-radius: 4px;
+  padding: 14px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--blue);
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+.venmo-copy-btn {
+  width: 100%;
+  padding: 13px 0;
+  background: transparent;
+  border: 1.5px solid var(--blue);
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  margin-bottom: 10px;
+}
+.venmo-copy-btn:hover { background: var(--blue); color: var(--cream); }
+.venmo-copy-btn.copied { background: var(--blue); color: var(--cream); }
+.venmo-open-btn {
+  width: 100%;
+  padding: 14px 0;
+  background: var(--orange);
+  border: none;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 14px;
+}
+.venmo-open-btn:hover { background: #f0a060; }
+.venmo-modal-cancel {
+  display: block;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(1,18,153,0.45);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.venmo-modal-cancel:hover { color: var(--blue); }
 
 /* ════════ FOOTER (matches index.html) ════════ */
 footer {
@@ -525,7 +664,7 @@ footer {
 <section class="order-hero">
   <div class="order-eyebrow">Cruisers Merch</div>
   <h1 class="order-title">GET YOUR TEE</h1>
-  <p class="order-sub">Pick your size, tap pay, and we'll have it ready for you. Payment runs through Venmo — your name and size are included in the note automatically. Local Denver pickup only post Tuesday Cruise ride, details to follow once orders close.</p>
+  <p class="order-sub">Pick your size, tap pay, and we'll have it ready for you. Payment runs through Venmo — please copy and paste the info below into your Venmo payment, thank you! Local Denver pickup only post Tuesday Cruise ride, details to follow once orders close.</p>
 </section>
 
 <!-- ORDER IMAGE -->
@@ -594,10 +733,29 @@ footer {
       <span class="price-value" id="price-display">Price TBA</span>
     </div>
 
+    <div class="venmo-note-preview">
+      <div class="venmo-note-preview-label">Your Venmo note</div>
+      <div class="venmo-note-preview-text" id="note-preview">Fill in your name and select a size to see your note.</div>
+      <button type="button" class="venmo-inline-copy" id="inline-copy-btn">Copy note</button>
+    </div>
+
     <button type="button" class="venmo-btn" id="venmo-btn">Pay with Venmo →</button>
     <div class="form-error" id="form-error">Add your name, email, and at least one size before heading to Venmo.</div>
     <p class="venmo-note">You'll be sent to Venmo to complete payment. We'll confirm your order once we've matched it up.</p>
 
+  </div>
+</div>
+
+<!-- VENMO INTERSTITIAL -->
+<div class="venmo-modal" id="venmo-modal">
+  <div class="venmo-modal-card">
+    <div class="venmo-modal-step">Step 1 of 2</div>
+    <div class="venmo-modal-title">Copy your order note</div>
+    <div class="venmo-modal-note" id="venmo-modal-note"></div>
+    <button class="venmo-copy-btn" id="venmo-copy-btn">Copy note</button>
+    <div class="venmo-modal-step" style="margin-bottom:10px;">Step 2 of 2 — paste the note into Venmo</div>
+    <button class="venmo-open-btn" id="venmo-open-btn">Open Venmo →</button>
+    <span class="venmo-modal-cancel" id="venmo-modal-cancel">Cancel</span>
   </div>
 </div>
 
@@ -654,7 +812,7 @@ footer {
 const VENMO_HANDLE = 'cuirserscc';
 // TODO (Connor): set the per-tee price once finalized — this auto-fills the
 // total and adds &amount= to the Venmo link. Leave as null until then.
-const PRICE_PER_SHIRT = null;
+const PRICE_PER_SHIRT = 35;
 // TODO (Connor): once you have stock counts, set max units per size here,
 // e.g. { S: 8, M: 20, L: 20, XL: 8 }. Leave a size as null for unlimited.
 // Once a size hits its limit, its + button disables and shows "Sold out."
@@ -736,15 +894,53 @@ function sizesSummary() {
 function updatePrice() {
   const display = document.getElementById('price-display');
   const qty = totalQty();
-  if (PRICE_PER_SHIRT && qty > 0) {
+  if (qty > 0) {
     display.textContent = '$' + (PRICE_PER_SHIRT * qty).toFixed(2);
   } else {
-    display.textContent = 'Price TBA';
+    display.textContent = '$0';
   }
 }
 updatePrice();
 
-// ── Venmo handoff ─────────────────────────────────────────────────────────────
+// ── Live note preview ────────────────────────────────────────────────────────
+function updateNotePreview() {
+  const name = document.getElementById('order-name').value.trim();
+  const summary = sizesSummary();
+  const previewEl = document.getElementById('note-preview');
+  const copyBtn = document.getElementById('inline-copy-btn');
+  const ready = name && summary;
+  previewEl.textContent = ready
+    ? `Cruisers Tee — ${summary} — ${name}`
+    : 'Fill in your name and select a size to see your note.';
+  previewEl.classList.toggle('ready', !!ready);
+  copyBtn.classList.toggle('visible', !!ready);
+}
+
+document.getElementById('order-name').addEventListener('input', updateNotePreview);
+
+// Patch into size stepper to also trigger preview update
+document.querySelectorAll('.size-row').forEach(row => {
+  row.querySelector('.size-minus').addEventListener('click', updateNotePreview);
+  row.querySelector('.size-plus').addEventListener('click', updateNotePreview);
+});
+
+// Inline copy button
+document.getElementById('inline-copy-btn').addEventListener('click', () => {
+  const text = document.getElementById('note-preview').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('inline-copy-btn');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy note';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+});
+
+// ── Venmo interstitial modal ──────────────────────────────────────────────────
+let pendingVenmoUrl = '';
+
 document.getElementById('venmo-btn').addEventListener('click', () => {
   const name = document.getElementById('order-name').value.trim();
   const email = document.getElementById('order-email').value.trim();
@@ -762,11 +958,46 @@ document.getElementById('venmo-btn').addEventListener('click', () => {
   const note = `Cruisers Tee — ${summary} — ${name}`;
   logOrder({ name, email, sizes: summary, qty, note, venmoHandle: VENMO_HANDLE });
 
-  let url = `https://venmo.com/u/${VENMO_HANDLE}?txn=pay&note=${encodeURIComponent(note)}`;
-  if (PRICE_PER_SHIRT) {
-    url += `&amount=${(PRICE_PER_SHIRT * qty).toFixed(2)}`;
+  // Build Venmo URL
+  const encodedNote = encodeURIComponent(note);
+  const amount = PRICE_PER_SHIRT ? (PRICE_PER_SHIRT * qty).toFixed(2) : '';
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    pendingVenmoUrl = `venmo://paycharge?txn=pay&recipients=${VENMO_HANDLE}&note=${encodedNote}`;
+  } else {
+    pendingVenmoUrl = `https://account.venmo.com/pay?recipients=${VENMO_HANDLE}&note=${encodedNote}`;
   }
-  window.open(url, '_blank', 'noopener');
+  if (amount) pendingVenmoUrl += `&amount=${amount}`;
+
+  // Show the interstitial — populate the note for copying
+  document.getElementById('venmo-modal-note').textContent = note;
+  document.getElementById('venmo-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+
+// Copy note button
+document.getElementById('venmo-copy-btn').addEventListener('click', () => {
+  const note = document.getElementById('venmo-modal-note').textContent;
+  navigator.clipboard.writeText(note).then(() => {
+    const btn = document.getElementById('venmo-copy-btn');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy note';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+});
+
+// Open Venmo button
+document.getElementById('venmo-open-btn').addEventListener('click', () => {
+  window.open(pendingVenmoUrl, '_blank', 'noopener');
+});
+
+// Cancel
+document.getElementById('venmo-modal-cancel').addEventListener('click', () => {
+  document.getElementById('venmo-modal').classList.remove('open');
+  document.body.style.overflow = '';
 });
 </script>
 
