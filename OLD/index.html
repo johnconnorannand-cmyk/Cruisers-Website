@@ -108,18 +108,17 @@ nav.scrolled {
   font-family: 'DM Mono', monospace !important;
   font-size: 11px !important;
   letter-spacing: 0.16em !important;
-  color: #ffffff !important;
+  color: var(--cream) !important;
   opacity: 1 !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
-  border: 1.5px solid var(--orange);
+  border: 1.5px solid rgba(246,243,236,0.6);
   padding: 8px 18px;
   border-radius: 2px;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease !important;
+  transition: border-color 0.2s ease, opacity 0.2s ease !important;
 }
 .nav-strava:hover {
-  border-color: var(--orange) !important;
-  background: rgba(251,168,112,0.15) !important;
+  border-color: var(--cream) !important;
   opacity: 1 !important;
 }
 .nav-contact-btn:hover { background: #f0a060 !important; }
@@ -986,14 +985,6 @@ footer {
     </div>
 
     <div class="gallery-item" onclick="openLightbox(1)">
-      <img src="assets/images/midsummer.jpg" alt="Cruisers x PAS x Enroute Midsummer Event">
-      <div class="gallery-overlay">
-        <div class="gallery-cat">MIDSUMMER EVENT</div>
-        <div class="gallery-view">View →</div>
-      </div>
-    </div>
-
-    <div class="gallery-item" onclick="openLightbox(2)">
       <img src="assets/images/womens.jpg" alt="Women's Ride">
       <div class="gallery-overlay">
         <div class="gallery-cat">WOMEN'S RIDE</div>
@@ -1001,7 +992,7 @@ footer {
       </div>
     </div>
 
-    <div class="gallery-item" onclick="openLightbox(3)">
+    <div class="gallery-item" onclick="openLightbox(2)">
       <img src="assets/images/epic.jpg" alt="Weekend Epics">
       <div class="gallery-overlay">
         <div class="gallery-cat">WEEKEND EPICS</div>
@@ -1009,7 +1000,7 @@ footer {
       </div>
     </div>
 
-    <div class="gallery-item" onclick="openLightbox(4)">
+    <div class="gallery-item" onclick="openLightbox(3)">
       <img src="assets/images/special.jpg" alt="Specialty Events">
       <div class="gallery-overlay">
         <div class="gallery-cat">SPECIALTY EVENTS</div>
@@ -1017,7 +1008,7 @@ footer {
       </div>
     </div>
 
-    <div class="gallery-item" onclick="openLightbox(5)">
+    <div class="gallery-item" onclick="openLightbox(4)">
       <img src="assets/images/101.jpg" alt="Riding 101">
       <div class="gallery-overlay">
         <div class="gallery-cat">RIDING 101</div>
@@ -1025,7 +1016,7 @@ footer {
       </div>
     </div>
 
-    <div class="gallery-item" onclick="openLightbox(6)">
+    <div class="gallery-item" onclick="openLightbox(5)">
       <img src="assets/images/swanky.jpg" alt="Swanky Fits">
       <div class="gallery-overlay">
         <div class="gallery-cat">SWANKY FITS</div>
@@ -1114,33 +1105,28 @@ const galleryData = [
     copy: 'Weekly social ride starting at REI Denver 5:30 pm. Two pace groups — A Group (18–20 MPH average) and B Group (14–16 MPH average).'
   },
   {
-    cat: 'CRUISERS × PAS × ENROUTE MIDSUMMER EVENT',
-    img: document.querySelector('.gallery-item:nth-child(2) img').src,
-    copy: '200K and 100K routes for the longest day of the year supported by PAS and Enroute. Followed by wine and good company.'
-  },
-  {
     cat: "WOMEN'S RIDE",
-    img: document.querySelector('.gallery-item:nth-child(3) img').src,
+    img: document.querySelector('.gallery-item:nth-child(2) img').src,
     copy: 'A dedicated space for women and femme riders to roll together. Same Cruisers energy, same good vibes.'
   },
   {
     cat: 'WEEKEND EPICS',
-    img: document.querySelector('.gallery-item:nth-child(4) img').src,
+    img: document.querySelector('.gallery-item:nth-child(3) img').src,
     copy: 'Mountain climbs, dirt roads, open skies — with a little more grind. Keep an eye out for our weekend rides when the long days are calling.'
   },
   {
     cat: 'SPECIALTY EVENTS',
-    img: document.querySelector('.gallery-item:nth-child(5) img').src,
+    img: document.querySelector('.gallery-item:nth-child(4) img').src,
     copy: 'Stay plugged in to our Strava for one-off specialty events, collabs, and anything outside the usual rides.'
   },
   {
     cat: 'RIDING 101',
-    img: document.querySelector('.gallery-item:nth-child(6) img').src,
+    img: document.querySelector('.gallery-item:nth-child(5) img').src,
     copy: 'New to group riding? This is your starting point. Everything you need to know about hand signals, road etiquette, and how to show up ready to roll.'
   },
   {
     cat: 'SWANKY FITS',
-    img: document.querySelector('.gallery-item:nth-child(7) img').src,
+    img: document.querySelector('.gallery-item:nth-child(6) img').src,
     copy: 'Golden hour, warm pavement, big grins, and major style points — summer rides in Denver at their finest. Find your favorite photos here.'
   },
 ];
