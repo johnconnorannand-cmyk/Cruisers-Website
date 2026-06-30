@@ -229,6 +229,15 @@ nav {
 /* ════════ ORDER HERO ════════ */
 .order-hero {
   padding: 168px 48px 56px;
+  display: flex;
+  justify-content: center;
+}
+.order-hero-card {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 48px 40px;
+  max-width: 560px;
+  width: 100%;
   text-align: center;
 }
 .order-eyebrow {
@@ -244,13 +253,15 @@ nav {
   font-size: clamp(40px, 6vw, 72px);
   line-height: 0.95;
   letter-spacing: 0.02em;
+  color: var(--blue);
+  text-transform: uppercase;
 }
 .order-sub {
   max-width: 520px;
   margin: 22px auto 0;
   font-size: 15px;
   line-height: 1.8;
-  color: rgba(246,243,236,0.7);
+  color: rgba(1,18,153,0.65);
 }
 
 /* ════════ ORDER FORM ════════ */
@@ -295,6 +306,7 @@ nav {
   letter-spacing: 0.03em;
   color: var(--blue);
   margin-bottom: 10px;
+  text-transform: uppercase;
 }
 .field-input {
   width: 100%;
@@ -334,6 +346,7 @@ nav {
   font-size: 14px;
   letter-spacing: 0.06em;
   color: var(--blue);
+  text-transform: uppercase;
 }
 .sold-out-tag {
   font-family: 'DM Mono', monospace;
@@ -389,11 +402,13 @@ nav {
   font-size: 18px;
   letter-spacing: 0.02em;
   color: var(--blue);
+  text-transform: uppercase;
 }
 .price-value {
   font-family: 'ImmanuelRough', sans-serif;
   font-size: 26px;
   color: var(--blue);
+  text-transform: uppercase;
 }
 
 .venmo-note-preview {
@@ -408,6 +423,7 @@ nav {
   font-size: 15px;
   color: var(--blue);
   margin-bottom: 8px;
+  text-transform: uppercase;
 }
 .venmo-note-preview-text {
   font-family: 'DM Mono', monospace;
@@ -506,6 +522,7 @@ nav {
   font-size: 28px;
   line-height: 1;
   margin-bottom: 20px;
+  text-transform: uppercase;
 }
 .venmo-modal-note {
   background: #fff;
@@ -625,7 +642,8 @@ footer {
   .nav-links a { font-size: 16px; opacity: 1; }
   .nav-hamburger { display: flex; }
   .nav-close { display: flex; }
-  .order-hero { padding: 110px 24px 40px; }
+  .order-hero { padding: 90px 24px 32px; }
+  .order-hero-card { padding: 36px 24px; }
   .order-card { padding: 36px 24px; }
   .size-rows { gap: 8px; }
   footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
@@ -662,9 +680,11 @@ footer {
 
 <!-- ORDER HERO -->
 <section class="order-hero">
-  <div class="order-eyebrow">Cruisers Merch</div>
-  <h1 class="order-title">GET YOUR TEE</h1>
-  <p class="order-sub">Pick your size, tap pay, and we'll have it ready for you. Payment runs through Venmo — please copy and paste the info below into your Venmo payment, thank you! Local Denver pickup only post Tuesday Cruise ride, details to follow once orders close.</p>
+  <div class="order-hero-card">
+    <div class="order-eyebrow">Cruisers Merch</div>
+    <h1 class="order-title">GET YOUR TEE</h1>
+    <p class="order-sub">Pick your size, tap pay, and we'll have it ready for you. Payment runs through Venmo — please copy and paste the info below into your Venmo payment, thank you! Local Denver pickup only post Tuesday Cruise ride, details to follow once orders close.</p>
+  </div>
 </section>
 
 <!-- ORDER IMAGE -->
