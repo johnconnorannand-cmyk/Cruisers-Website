@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tee Order — Cruisers</title>
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- Open Graph / Share thumbnail -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cruisers.cc/order.html">
+<meta property="og:title" content="Tee Order — Cruisers">
+<meta property="og:description" content="Order your Cruisers tee.">
+<meta property="og:image" content="assets/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: 'ImmanuelRough';
+  src: url('assets/fonts/immanuel-rough.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Immanuel';
+  src: url('assets/fonts/immanuel-regular.otf') format('opentype');
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue:   #011299;
+  --orange: #FBA870;
+  --cream:  #f6f3ec;
+  --ink:    #07070f;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--blue);
+  color: var(--cream);
+  font-family: 'Epilogue', sans-serif;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+
+/* ════════ NAV (matches index.html) ════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(1,18,153,0.95);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 28px;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-contact-btn {
+  background: var(--orange) !important;
+  color: var(--blue) !important;
+  padding: 8px 18px;
+  border-radius: 2px;
+  opacity: 1 !important;
+  font-weight: 500;
+  transition: background 0.2s ease !important;
+}
+.nav-contact-btn:hover { background: #f0a060 !important; }
+.nav-strava {
+  font-family: 'DM Mono', monospace !important;
+  font-size: 11px !important;
+  letter-spacing: 0.16em !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-transform: uppercase !important;
+  border: 1.5px solid var(--orange);
+  padding: 8px 18px;
+  border-radius: 2px;
+  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease !important;
+}
+.nav-strava:hover {
+  border-color: var(--orange) !important;
+  background: rgba(251,168,112,0.15) !important;
+  opacity: 1 !important;
+}
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cream);
+}
+.nav-close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(246,243,236,0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cream);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.nav-close:hover { border-color: var(--orange); color: var(--orange); }
+
+/* ════════ PASSWORD GATE ════════ */
+.gate {
+  position: fixed;
+  inset: 0;
+  background: var(--blue);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.gate-logo {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 36px;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.gate-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(246,243,236,0.5);
+}
+.gate-input {
+  padding: 13px 20px;
+  border: 1.5px solid rgba(246,243,236,0.25);
+  border-radius: 4px;
+  background: transparent;
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: var(--cream);
+  text-align: center;
+  width: 220px;
+  transition: border-color 0.2s ease;
+}
+.gate-input:focus { outline: none; border-color: var(--orange); }
+.gate-input::placeholder { color: rgba(246,243,236,0.3); }
+.gate-btn {
+  padding: 13px 32px;
+  background: var(--orange);
+  color: var(--blue);
+  border: none;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.gate-btn:hover { background: #f0a060; }
+.gate-error {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #e07070;
+  display: none;
+}
+.gate-error.show { display: block; }
+
+/* ════════ BACKGROUND ════════ */
+.photo-bg-wrap {
+  position: relative;
+  background-image: url('assets/images/bg.jpg');
+  background-size: cover;
+  background-position: 70% 30%;
+  background-attachment: scroll;
+}
+.photo-bg-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,20,0.22);
+  z-index: 0;
+  pointer-events: none;
+}
+.photo-bg-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ════════ ORDER HERO ════════ */
+.order-hero {
+  padding: 168px 48px 56px;
+  text-align: center;
+}
+.order-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 18px;
+}
+.order-title {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+}
+.order-sub {
+  max-width: 520px;
+  margin: 22px auto 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(246,243,236,0.7);
+}
+
+/* ════════ ORDER FORM ════════ */
+.order-image-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0 24px 32px;
+}
+.order-image {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(246,243,236,0.08);
+  border: 1.5px dashed rgba(246,243,236,0.25);
+}
+.order-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.order-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0 24px 120px;
+}
+.order-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 48px 40px;
+  color: var(--blue);
+}
+.field-group { margin-bottom: 28px; }
+.field-label {
+  display: block;
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+.field-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid rgba(1,18,153,0.18);
+  border-radius: 4px;
+  background: #fff;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 15px;
+  color: var(--blue);
+  transition: border-color 0.2s ease;
+}
+.field-input:focus {
+  border-color: var(--blue);
+  outline: none;
+}
+.field-input::placeholder { color: rgba(1,18,153,0.32); }
+
+.size-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.size-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(1,18,153,0.18);
+  border-radius: 4px;
+  background: #fff;
+}
+.size-row.has-qty { border-color: var(--blue); }
+.size-row.sold-out { opacity: 0.5; }
+.size-row-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+}
+.sold-out-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b3261e;
+  margin-left: 8px;
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.qty-btn {
+  width: 34px; height: 34px;
+  border: 1.5px solid rgba(1,18,153,0.22);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--blue);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+}
+.qty-btn:hover { border-color: var(--blue); }
+.qty-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.qty-btn:disabled:hover { border-color: rgba(1,18,153,0.22); }
+.qty-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-top: 1.5px solid rgba(1,18,153,0.12);
+  border-bottom: 1.5px solid rgba(1,18,153,0.12);
+  margin-bottom: 28px;
+}
+.price-label {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: var(--blue);
+}
+.price-value {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 26px;
+  color: var(--blue);
+}
+
+.venmo-btn {
+  width: 100%;
+  padding: 17px 0;
+  background: var(--orange);
+  color: var(--blue);
+  border: none;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.venmo-btn:hover { background: #f0a060; }
+.venmo-note {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(1,18,153,0.55);
+  text-align: center;
+}
+.form-error {
+  display: none;
+  margin-top: 14px;
+  font-size: 12px;
+  color: #b3261e;
+  text-align: center;
+}
+.form-error.show { display: block; }
+
+/* ════════ FOOTER (matches index.html) ════════ */
+footer {
+  background: var(--orange);
+  padding: 32px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 22px;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(1,18,153,0.7);
+  transition: color 0.2s ease;
+}
+.footer-links a:hover { color: var(--blue); }
+.footer-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(1,18,153,0.4);
+}
+
+/* ════════ MOBILE ════════ */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; height: 60px; border-bottom: 2px solid rgba(251,168,112,0.3); }
+  .nav-logo { font-size: 22px; }
+  .nav-links {
+    display: none !important;
+    position: fixed !important;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: var(--blue) !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 36px !important;
+    z-index: 9999 !important;
+  }
+  .nav-links.open { display: flex !important; }
+  .nav-links a { font-size: 16px; opacity: 1; }
+  .nav-hamburger { display: flex; }
+  .nav-close { display: flex; }
+  .order-hero { padding: 110px 24px 40px; }
+  .order-card { padding: 36px 24px; }
+  .size-rows { gap: 8px; }
+  footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div class="gate" id="gate">
+  <div class="gate-logo">CRuISERS</div>
+  <div class="gate-label">Enter password to continue</div>
+  <input class="gate-input" type="password" id="gate-input" placeholder="Password" autocomplete="off">
+  <button class="gate-btn" id="gate-btn">Enter →</button>
+  <div class="gate-error" id="gate-error">Incorrect password</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">CRuISERS</a>
+  <ul class="nav-links" id="nav-links">
+    <li><button class="nav-close" onclick="toggleNav()">✕</button></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
+    <li><a href="index.html#contact" class="nav-contact-btn">Contact</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- BACKGROUND WRAP -->
+<div class="photo-bg-wrap">
+
+<!-- ORDER HERO -->
+<section class="order-hero">
+  <div class="order-eyebrow">Cruisers Merch</div>
+  <h1 class="order-title">GET YOUR TEE</h1>
+  <p class="order-sub">Pick your size, tap pay, and we'll have it ready for you. Payment runs through Venmo — your name and size are included in the note automatically. Local Denver pickup only post Tuesday Cruise ride, details to follow once orders close.</p>
+</section>
+
+<!-- ORDER IMAGE -->
+<div class="order-image-wrap">
+  <div class="order-image">
+    <!-- TODO (Connor): drop your tee photo in as assets/images/tee-product.jpg.
+         Until then this shows as an empty dashed box on the live site. -->
+    <img src="assets/images/tee-product.jpg" alt="Cruisers Tee" onerror="this.parentElement.style.background='rgba(246,243,236,0.08)'; this.remove();">
+  </div>
+</div>
+
+<!-- ORDER FORM -->
+<div class="order-wrap">
+  <div class="order-card">
+
+    <div class="field-group">
+      <label class="field-label" for="order-name">Your name</label>
+      <input class="field-input" type="text" id="order-name" placeholder="First and last name" autocomplete="name">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="order-email">Email</label>
+      <input class="field-input" type="email" id="order-email" placeholder="you@email.com" autocomplete="email">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Sizes</label>
+      <div class="size-rows" id="size-rows">
+        <div class="size-row" data-size="S">
+          <span class="size-row-label">S<span class="sold-out-tag" style="display:none;">Sold out</span></span>
+          <div class="qty-row">
+            <button type="button" class="qty-btn size-minus">−</button>
+            <span class="qty-val">0</span>
+            <button type="button" class="qty-btn size-plus">+</button>
+          </div>
+        </div>
+        <div class="size-row" data-size="M">
+          <span class="size-row-label">M<span class="sold-out-tag" style="display:none;">Sold out</span></span>
+          <div class="qty-row">
+            <button type="button" class="qty-btn size-minus">−</button>
+            <span class="qty-val">0</span>
+            <button type="button" class="qty-btn size-plus">+</button>
+          </div>
+        </div>
+        <div class="size-row" data-size="L">
+          <span class="size-row-label">L<span class="sold-out-tag" style="display:none;">Sold out</span></span>
+          <div class="qty-row">
+            <button type="button" class="qty-btn size-minus">−</button>
+            <span class="qty-val">0</span>
+            <button type="button" class="qty-btn size-plus">+</button>
+          </div>
+        </div>
+        <div class="size-row" data-size="XL">
+          <span class="size-row-label">XL<span class="sold-out-tag" style="display:none;">Sold out</span></span>
+          <div class="qty-row">
+            <button type="button" class="qty-btn size-minus">−</button>
+            <span class="qty-val">0</span>
+            <button type="button" class="qty-btn size-plus">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-row">
+      <span class="price-label">Total</span>
+      <span class="price-value" id="price-display">Price TBA</span>
+    </div>
+
+    <button type="button" class="venmo-btn" id="venmo-btn">Pay with Venmo →</button>
+    <div class="form-error" id="form-error">Add your name, email, and at least one size before heading to Venmo.</div>
+    <p class="venmo-note">You'll be sent to Venmo to complete payment. We'll confirm your order once we've matched it up.</p>
+
+  </div>
+</div>
+
+</div><!-- /photo-bg-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CRuISERS</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2022</div>
+</footer>
+
+<script>
+// ── Password gate ─────────────────────────────────────────────────────────────
+(function() {
+  var PASS = 'Tee';
+  var gate = document.getElementById('gate');
+  var input = document.getElementById('gate-input');
+  var btn = document.getElementById('gate-btn');
+  var err = document.getElementById('gate-error');
+
+  // Already unlocked this session
+  if (sessionStorage.getItem('cruisers-unlocked') === '1') {
+    gate.style.display = 'none';
+    return;
+  }
+
+  document.body.style.overflow = 'hidden';
+
+  function attempt() {
+    if (input.value === PASS) {
+      sessionStorage.setItem('cruisers-unlocked', '1');
+      gate.style.display = 'none';
+      document.body.style.overflow = '';
+    } else {
+      err.classList.add('show');
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') attempt();
+  });
+})();
+
+// ── Config ───────────────────────────────────────────────────────────────────
+// TODO (Connor): replace with the real Venmo username (no @) once it's set up.
+const VENMO_HANDLE = 'cuirserscc';
+// TODO (Connor): set the per-tee price once finalized — this auto-fills the
+// total and adds &amount= to the Venmo link. Leave as null until then.
+const PRICE_PER_SHIRT = null;
+// TODO (Connor): once you have stock counts, set max units per size here,
+// e.g. { S: 8, M: 20, L: 20, XL: 8 }. Leave a size as null for unlimited.
+// Once a size hits its limit, its + button disables and shows "Sold out."
+const STOCK_LIMITS = { S: null, M: null, L: null, XL: null };
+// TODO (Connor): paste the Google Apps Script Web App URL here once deployed
+// (see setup steps). Leave as null and order logging is skipped, Venmo still works.
+const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwlBc88cikNuNSYIdF7CDnZ4Q_rh4KIlzrSMGoIlBu9gncn9AHBC-GohW9-iOKQlvMO/exec';
+
+// ── Order logging (Google Sheet) ─────────────────────────────────────────────
+function logOrder(payload) {
+  if (!SHEET_WEBHOOK_URL) return;
+  // no-cors: fire-and-forget, we don't read the response and don't want a
+  // logging hiccup to ever block the Venmo handoff below.
+  fetch(SHEET_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).catch(() => {});
+}
+
+// ── Nav ──────────────────────────────────────────────────────────────────────
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+
+// ── Multi-size quantity selection ────────────────────────────────────────────
+const sizeQty = { S: 0, M: 0, L: 0, XL: 0 };
+
+document.querySelectorAll('.size-row').forEach(row => {
+  const size = row.dataset.size;
+  const valEl = row.querySelector('.qty-val');
+  const plusBtn = row.querySelector('.size-plus');
+
+  row.querySelector('.size-minus').addEventListener('click', () => {
+    sizeQty[size] = Math.max(0, sizeQty[size] - 1);
+    valEl.textContent = sizeQty[size];
+    row.classList.toggle('has-qty', sizeQty[size] > 0);
+    refreshStockUI(size);
+    updatePrice();
+  });
+  plusBtn.addEventListener('click', () => {
+    const limit = STOCK_LIMITS[size];
+    if (limit != null && sizeQty[size] >= limit) return;
+    sizeQty[size] = Math.min(20, sizeQty[size] + 1);
+    valEl.textContent = sizeQty[size];
+    row.classList.toggle('has-qty', sizeQty[size] > 0);
+    refreshStockUI(size);
+    updatePrice();
+  });
+});
+
+function refreshStockUI(size) {
+  const row = document.querySelector(`.size-row[data-size="${size}"]`);
+  const limit = STOCK_LIMITS[size];
+  const plusBtn = row.querySelector('.size-plus');
+  const tag = row.querySelector('.sold-out-tag');
+  const atLimit = limit != null && sizeQty[size] >= limit;
+  plusBtn.disabled = atLimit;
+  tag.style.display = atLimit ? 'inline' : 'none';
+  row.classList.toggle('sold-out', atLimit && sizeQty[size] === 0);
+}
+
+// Initialize sold-out state on load (covers a size starting at limit 0)
+document.querySelectorAll('.size-row').forEach(row => refreshStockUI(row.dataset.size));
+
+function totalQty() {
+  return Object.values(sizeQty).reduce((a, b) => a + b, 0);
+}
+
+function sizesSummary() {
+  return Object.entries(sizeQty)
+    .filter(([, n]) => n > 0)
+    .map(([size, n]) => `${n}x ${size}`)
+    .join(', ');
+}
+
+// ── Price display ────────────────────────────────────────────────────────────
+function updatePrice() {
+  const display = document.getElementById('price-display');
+  const qty = totalQty();
+  if (PRICE_PER_SHIRT && qty > 0) {
+    display.textContent = '$' + (PRICE_PER_SHIRT * qty).toFixed(2);
+  } else {
+    display.textContent = 'Price TBA';
+  }
+}
+updatePrice();
+
+// ── Venmo handoff ─────────────────────────────────────────────────────────────
+document.getElementById('venmo-btn').addEventListener('click', () => {
+  const name = document.getElementById('order-name').value.trim();
+  const email = document.getElementById('order-email').value.trim();
+  const errorEl = document.getElementById('form-error');
+  const qty = totalQty();
+  const validEmail = /^\S+@\S+\.\S+$/.test(email);
+
+  if (!name || !validEmail || qty === 0) {
+    errorEl.classList.add('show');
+    return;
+  }
+  errorEl.classList.remove('show');
+
+  const summary = sizesSummary();
+  const note = `Cruisers Tee — ${summary} — ${name}`;
+  logOrder({ name, email, sizes: summary, qty, note, venmoHandle: VENMO_HANDLE });
+
+  let url = `https://venmo.com/u/${VENMO_HANDLE}?txn=pay&note=${encodeURIComponent(note)}`;
+  if (PRICE_PER_SHIRT) {
+    url += `&amount=${(PRICE_PER_SHIRT * qty).toFixed(2)}`;
+  }
+  window.open(url, '_blank', 'noopener');
+});
+</script>
+
+</body>
+</html>
