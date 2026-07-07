@@ -86,7 +86,7 @@ nav {
   transition: opacity 0.2s ease;
 }
 .nav-links a:hover { opacity: 1; }
-.nav-contact-btn, .nav-strava {
+.nav-contact-btn, .nav-strava, .nav-home {
   font-family: 'DM Mono', monospace !important;
   font-size: 11px !important;
   font-weight: 400 !important;
@@ -100,7 +100,7 @@ nav {
   border-radius: 2px;
   transition: background 0.2s ease !important;
 }
-.nav-contact-btn:hover, .nav-strava:hover {
+.nav-contact-btn:hover, .nav-strava:hover, .nav-home:hover {
   background: #f0a060 !important;
   opacity: 1 !important;
 }
@@ -599,7 +599,7 @@ footer {
   <a href="index.html" class="nav-logo">CRuISERS</a>
   <ul class="nav-links" id="nav-links">
     <li><button class="nav-close" onclick="toggleNav()">✕</button></li>
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html" class="nav-home">Home</a></li>
     <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
     <li><a href="index.html#contact" class="nav-contact-btn">Contact</a></li>
   </ul>
@@ -743,19 +743,25 @@ const PRICE_PER_SHIRT = 35;
 const STOCK_LIMITS = { S: null, M: null, L: null, XL: null };
 // TODO (Connor): paste the Google Apps Script Web App URL here once deployed
 // (see setup steps). Leave as null and order logging is skipped, Venmo still works.
-const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwlBc88cikNuNSYIdF7CDnZ4Q_rh4KIlzrSMGoIlBu9gncn9AHBC-GohW9-iOKQlvMO/exec';
+const SHEET_WEBHOOK_URL = 'https://formspree.io/f/xwvdjlzq';
 
-// ── Order logging (Google Sheet) ─────────────────────────────────────────────
+// ── Order logging (Formspree) ─────────────────────────────────────────────────
 function logOrder(payload) {
   if (!SHEET_WEBHOOK_URL) return;
-  // no-cors: fire-and-forget, we don't read the response and don't want a
-  // logging hiccup to ever block the Venmo handoff below.
   fetch(SHEET_WEBHOOK_URL, {
     method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(payload)
-  }).catch(() => {});
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      name:  payload.name  || '',
+      email: payload.email || '',
+      sizes: payload.sizes || '',
+      qty:   payload.qty   || '',
+      note:  payload.note  || ''
+    })
+  })
+  .then(r => r.json())
+  .then(t => console.log('Order logged:', t))
+  .catch(err => console.warn('Order log failed:', err));
 }
 
 // ── Nav ──────────────────────────────────────────────────────────────────────
