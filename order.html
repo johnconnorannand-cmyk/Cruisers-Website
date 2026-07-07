@@ -398,6 +398,30 @@ nav {
 .venmo-inline-copy:hover { background: var(--blue); color: var(--cream); }
 .venmo-inline-copy.copied { background: var(--blue); color: var(--cream); }
 
+.order-confirm {
+  display: none;
+  background: var(--blue);
+  border: 1.5px solid var(--orange);
+  border-radius: 4px;
+  padding: 20px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.order-confirm.show { display: block; }
+.order-confirm-title {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 22px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.order-confirm-body {
+  font-family: 'Epilogue', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--cream);
+}
+
 .venmo-btn {
   width: 100%;
   padding: 17px 0;
@@ -697,6 +721,11 @@ footer {
       <button type="button" class="venmo-inline-copy" id="inline-copy-btn">Copy note</button>
     </div>
 
+    <div class="order-confirm" id="order-confirm">
+      <div class="order-confirm-title">Thanks for your order!</div>
+      <div class="order-confirm-body">We'll be verifying your payment and be in touch with more info.</div>
+    </div>
+
     <button type="button" class="venmo-btn" id="venmo-btn">Pay with Venmo →</button>
     <div class="form-error" id="form-error">Add your name, email, and at least one size before heading to Venmo.</div>
     <p class="venmo-note">You'll be sent to Venmo to complete payment. We'll confirm your order once we've matched it up.</p>
@@ -922,6 +951,11 @@ document.getElementById('venmo-copy-btn').addEventListener('click', () => {
 // Open Venmo button
 document.getElementById('venmo-open-btn').addEventListener('click', () => {
   window.open(pendingVenmoUrl, '_blank', 'noopener');
+  document.getElementById('venmo-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('order-confirm').classList.add('show');
+  // Scroll confirm message into view
+  document.getElementById('order-confirm').scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 // Cancel
