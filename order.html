@@ -13,9 +13,11 @@
 <meta property="og:url" content="https://cruisers.cc/order.html">
 <meta property="og:title" content="Tee Order — Cruisers">
 <meta property="og:description" content="Order your Cruisers tee.">
-<meta property="og:image" content="assets/images/og-image.jpg">
+<meta property="og:image" content="assets/images/Order-thumbnail.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/images/Order-thumbnail.jpg">
 
 <style>
 
@@ -84,31 +86,22 @@ nav {
   transition: opacity 0.2s ease;
 }
 .nav-links a:hover { opacity: 1; }
-.nav-contact-btn {
-  background: var(--orange) !important;
-  color: var(--blue) !important;
-  padding: 8px 18px;
-  border-radius: 2px;
-  opacity: 1 !important;
-  font-weight: 500;
-  transition: background 0.2s ease !important;
-}
-.nav-contact-btn:hover { background: #f0a060 !important; }
-.nav-strava {
+.nav-contact-btn, .nav-strava {
   font-family: 'DM Mono', monospace !important;
   font-size: 11px !important;
+  font-weight: 400 !important;
   letter-spacing: 0.16em !important;
-  color: #ffffff !important;
-  opacity: 1 !important;
   text-transform: uppercase !important;
-  border: 1.5px solid var(--orange);
+  text-decoration: none !important;
+  color: var(--blue) !important;
+  opacity: 1 !important;
+  background: var(--orange);
   padding: 8px 18px;
   border-radius: 2px;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease !important;
+  transition: background 0.2s ease !important;
 }
-.nav-strava:hover {
-  border-color: var(--orange) !important;
-  background: rgba(251,168,112,0.15) !important;
+.nav-contact-btn:hover, .nav-strava:hover {
+  background: #f0a060 !important;
   opacity: 1 !important;
 }
 .nav-hamburger {
@@ -140,70 +133,6 @@ nav {
 }
 .nav-close:hover { border-color: var(--orange); color: var(--orange); }
 
-/* ════════ PASSWORD GATE ════════ */
-.gate {
-  position: fixed;
-  inset: 0;
-  background: var(--blue);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-.gate-logo {
-  font-family: 'ImmanuelRough', sans-serif;
-  font-size: 36px;
-  color: var(--cream);
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
-}
-.gate-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(246,243,236,0.5);
-}
-.gate-input {
-  padding: 13px 20px;
-  border: 1.5px solid rgba(246,243,236,0.25);
-  border-radius: 4px;
-  background: transparent;
-  font-family: 'DM Mono', monospace;
-  font-size: 15px;
-  letter-spacing: 0.1em;
-  color: var(--cream);
-  text-align: center;
-  width: 220px;
-  transition: border-color 0.2s ease;
-}
-.gate-input:focus { outline: none; border-color: var(--orange); }
-.gate-input::placeholder { color: rgba(246,243,236,0.3); }
-.gate-btn {
-  padding: 13px 32px;
-  background: var(--orange);
-  color: var(--blue);
-  border: none;
-  border-radius: 4px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.gate-btn:hover { background: #f0a060; }
-.gate-error {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #e07070;
-  display: none;
-}
-.gate-error.show { display: block; }
 
 /* ════════ BACKGROUND ════════ */
 .photo-bg-wrap {
@@ -665,15 +594,6 @@ footer {
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
-<div class="gate" id="gate">
-  <div class="gate-logo">CRuISERS</div>
-  <div class="gate-label">Enter password to continue</div>
-  <input class="gate-input" type="password" id="gate-input" placeholder="Password" autocomplete="off">
-  <button class="gate-btn" id="gate-btn">Enter →</button>
-  <div class="gate-error" id="gate-error">Incorrect password</div>
-</div>
-
 <!-- NAV -->
 <nav id="nav">
   <a href="index.html" class="nav-logo">CRuISERS</a>
@@ -811,40 +731,6 @@ footer {
 </footer>
 
 <script>
-// ── Password gate ─────────────────────────────────────────────────────────────
-(function() {
-  var PASS = 'Tee';
-  var gate = document.getElementById('gate');
-  var input = document.getElementById('gate-input');
-  var btn = document.getElementById('gate-btn');
-  var err = document.getElementById('gate-error');
-
-  // Already unlocked this session
-  if (sessionStorage.getItem('cruisers-unlocked') === '1') {
-    gate.style.display = 'none';
-    return;
-  }
-
-  document.body.style.overflow = 'hidden';
-
-  function attempt() {
-    if (input.value === PASS) {
-      sessionStorage.setItem('cruisers-unlocked', '1');
-      gate.style.display = 'none';
-      document.body.style.overflow = '';
-    } else {
-      err.classList.add('show');
-      input.value = '';
-      input.focus();
-    }
-  }
-
-  btn.addEventListener('click', attempt);
-  input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') attempt();
-  });
-})();
-
 // ── Config ───────────────────────────────────────────────────────────────────
 // TODO (Connor): replace with the real Venmo username (no @) once it's set up.
 const VENMO_HANDLE = 'cuirserscc';

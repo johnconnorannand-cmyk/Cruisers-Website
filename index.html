@@ -95,34 +95,24 @@ nav.scrolled {
   transition: opacity 0.2s ease;
 }
 .nav-links a:hover { opacity: 1; }
-.nav-contact-btn {
-  background: var(--orange) !important;
-  color: var(--blue) !important;
-  padding: 8px 18px;
-  border-radius: 2px;
-  opacity: 1 !important;
-  font-weight: 500;
-  transition: background 0.2s ease !important;
-}
-.nav-strava {
+.nav-contact-btn, .nav-strava, .nav-tee-btn {
   font-family: 'DM Mono', monospace !important;
   font-size: 11px !important;
+  font-weight: 400 !important;
   letter-spacing: 0.16em !important;
-  color: #ffffff !important;
-  opacity: 1 !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
-  border: 1.5px solid var(--orange);
+  color: var(--blue) !important;
+  opacity: 1 !important;
+  background: var(--orange);
   padding: 8px 18px;
   border-radius: 2px;
-  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease !important;
+  transition: background 0.2s ease !important;
 }
-.nav-strava:hover {
-  border-color: var(--orange) !important;
-  background: rgba(251,168,112,0.15) !important;
+.nav-contact-btn:hover, .nav-strava:hover, .nav-tee-btn:hover {
+  background: #f0a060 !important;
   opacity: 1 !important;
 }
-.nav-contact-btn:hover { background: #f0a060 !important; }
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -912,6 +902,7 @@ footer {
   <ul class="nav-links" id="nav-links">
     <li><button class="nav-close" onclick="toggleNav()">✕</button></li>
     <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
+    <li><a href="order.html" class="nav-tee-btn">Tee Shirt #1</a></li>
     <li><a href="#" class="nav-contact-btn" onclick="openContact(event)">Contact</a></li>
   </ul>
   <div class="nav-hamburger" onclick="toggleNav()">
@@ -1049,6 +1040,7 @@ footer {
   <div class="footer-logo">CRuISERS</div>
   <ul class="footer-links">
     <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
+    <li><a href="order.html">Order a Tee</a></li>
     <li><a href="#" onclick="openContact(event)">Contact</a></li>
   </ul>
   <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2022</div>
@@ -1205,6 +1197,11 @@ function closeContact() {
 document.getElementById('contact-modal').addEventListener('click', function(e) {
   if (e.target === this) closeContact();
 });
+// Open contact modal automatically if arriving via #contact (e.g. from order.html)
+if (window.location.hash === '#contact') {
+  document.getElementById('contact-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 function submitForm() {
   const name  = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
