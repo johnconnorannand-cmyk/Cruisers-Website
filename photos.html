@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Gallery — Cruisers</title>
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- Open Graph / Share thumbnail -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cruisers.cc/photos.html">
+<meta property="og:title" content="Photo Gallery — Cruisers">
+<meta property="og:description" content="Photos from Cruisers rides and events.">
+<meta property="og:image" content="assets/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Photo Gallery — Cruisers">
+<meta name="twitter:description" content="Photos from Cruisers rides and events.">
+<meta name="twitter:image" content="assets/images/og-image.jpg">
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: 'ImmanuelRough';
+  src: url('assets/fonts/immanuel-rough.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Immanuel';
+  src: url('assets/fonts/immanuel-regular.otf') format('opentype');
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue:   #011299;
+  --orange: #FBA870;
+  --cream:  #f6f3ec;
+  --ink:    #07070f;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--blue);
+  color: var(--cream);
+  font-family: 'Epilogue', sans-serif;
+  overflow-x: hidden;
+}
+a { text-decoration: none; }
+
+/* ════════ NAV ════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(1,18,153,0.95);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 28px;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-links a.active { opacity: 1; color: var(--orange); }
+.nav-contact-btn, .nav-strava, .nav-tee-btn {
+  font-family: 'DM Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  color: var(--blue) !important;
+  opacity: 1 !important;
+  background: var(--orange);
+  padding: 8px 18px;
+  border-radius: 2px;
+  transition: background 0.2s ease !important;
+}
+.nav-contact-btn:hover, .nav-strava:hover, .nav-tee-btn:hover {
+  background: #f0a060 !important;
+  opacity: 1 !important;
+}
+.nav-close { display: none; }
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--cream);
+  border-radius: 2px;
+}
+
+/* ════════ PHOTO BACKGROUND WRAPPER (matches home page) ════════ */
+.photo-bg-wrap {
+  position: relative;
+  background-image: url('assets/images/bg.jpg');
+  background-size: cover;
+  background-position: 70% 30%;
+  background-attachment: scroll;
+}
+.photo-bg-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,20,0.22);
+  z-index: 0;
+  pointer-events: none;
+}
+.photo-bg-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ════════ PAGE HEADER ════════ */
+.gallery-page {
+  padding: 160px 64px 100px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.gallery-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 20px;
+  row-gap: 12px;
+  border-bottom: 1px solid rgba(246,243,236,0.08);
+  padding-bottom: 20px;
+}
+.gallery-title {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 40px;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+  text-transform: uppercase !important;
+  background: var(--cream);
+  padding: 4px 16px 6px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ════════ PHOTO GRID ════════ */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.photo-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  background: rgba(246,243,236,0.05);
+}
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.photo-item:hover img { transform: scale(1.05); }
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(1,18,153,0.65);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.photo-item:hover .photo-overlay { opacity: 1; }
+.photo-caption {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.photo-download-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+.photo-download-icon:hover { background: #f0a060; }
+.photo-download-icon svg {
+  width: 14px; height: 14px;
+  stroke: var(--blue);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.photo-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 100px 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246,243,236,0.4);
+}
+
+/* ════════ LIGHTBOX ════════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(7,7,15,0.97);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox-inner {
+  position: relative;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.lightbox-close {
+  position: absolute;
+  top: -36px; right: 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(246,243,236,0.35);
+  cursor: pointer;
+  border: none; background: none; padding: 8px;
+  transition: color 0.2s ease;
+}
+.lightbox-close:hover { color: var(--orange); }
+.lightbox-img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  background: var(--ink);
+  border-radius: 3px 3px 0 0;
+  display: block;
+}
+.lightbox-body {
+  background: var(--cream);
+  width: 100%;
+  padding: 20px 28px;
+  border-radius: 0 0 3px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.lightbox-cap {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.lightbox-download {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--blue);
+  color: var(--orange);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+.lightbox-download:hover { background: rgba(1,18,153,0.75); }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.lightbox-arrow {
+  pointer-events: all;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246,243,236,0.3);
+  cursor: pointer;
+  border: 1px solid rgba(246,243,236,0.1);
+  background: rgba(7,7,15,0.7);
+  padding: 10px 14px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  position: absolute;
+}
+.lightbox-arrow:hover { color: var(--cream); border-color: var(--orange); }
+.lightbox-arrow.prev { left: -44px; }
+.lightbox-arrow.next { right: -44px; }
+
+/* ════════ FOOTER ════════ */
+footer {
+  background: var(--orange);
+  padding: 32px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo {
+  font-family: 'ImmanuelRough', sans-serif;
+  font-size: 22px;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246,243,236,0.7);
+  transition: color 0.2s ease;
+}
+.footer-links a:hover { color: var(--blue); }
+.footer-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(1,18,153,0.6);
+}
+
+/* ════════ MOBILE ════════ */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; height: 60px; }
+  .nav-logo { font-size: 22px; }
+  .nav-links {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    width: 100vw !important; height: 100vh !important;
+    background: var(--blue) !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 36px !important;
+    z-index: 9999 !important;
+  }
+  .nav-links.open { display: flex !important; }
+  .nav-links a { font-size: 16px; opacity: 1; }
+  .nav-close {
+    display: block;
+    background: none; border: none;
+    color: var(--cream); font-size: 22px;
+    cursor: pointer;
+  }
+  .nav-hamburger { display: flex; }
+
+  .gallery-page { padding: 100px 20px 64px; }
+  .photo-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+  .lightbox-arrow.prev { left: 4px; }
+  .lightbox-arrow.next { right: 4px; }
+  footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .photo-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">CRuISERS</a>
+  <ul class="nav-links" id="nav-links">
+    <li><button class="nav-close" onclick="toggleNav()">✕</button></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener" class="nav-strava">Strava</a></li>
+    <li><a href="order.html" class="nav-tee-btn">T-Shirt #1</a></li>
+    <li><a href="index.html#contact" class="nav-contact-btn">Contact</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxBg(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕ Close</button>
+    <img class="lightbox-img" id="lb-img" src="" alt="">
+    <div class="lightbox-body">
+      <div class="lightbox-cap" id="lb-cap"></div>
+      <a class="lightbox-download" id="lb-download" href="" download>Download →</a>
+    </div>
+    <div class="lightbox-nav">
+      <button class="lightbox-arrow prev" onclick="lbNav(-1)">←</button>
+      <button class="lightbox-arrow next" onclick="lbNav(1)">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="photo-bg-wrap">
+<div class="gallery-page">
+  <div class="gallery-header">
+    <div class="gallery-title">PHOTO GALLERY</div>
+  </div>
+
+  <div class="photo-grid" id="photo-grid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CRuISERS</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="https://www.strava.com/clubs/1062423" target="_blank" rel="noopener">Strava</a></li>
+    <li><a href="order.html">Order a Tee</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="footer-meta">Denver CO &nbsp;·&nbsp; Est. 2022</div>
+</footer>
+
+</div><!-- /photo-bg-wrap -->
+
+<script>
+// ── Photos: auto-loaded from the "photo-gallery" folder in your repo ──────────
+// Just drop new images into assets/photo-gallery/ and push — no code edits needed.
+// TODO: set these two values to your repo, then this pulls the folder automatically:
+const REPO_OWNER  = 'YOUR-GITHUB-USERNAME';
+const REPO_NAME   = 'YOUR-REPO-NAME';
+const REPO_BRANCH = 'main';
+const FOLDER_PATH = 'assets/photo-gallery';
+
+let photos = [];
+const grid = document.getElementById('photo-grid');
+
+function captionFromFilename(name) {
+  return name.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function renderGrid() {
+  if (photos.length === 0) {
+    grid.innerHTML = '<div class="photo-empty">Photos coming soon</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  photos.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'photo-item';
+    item.onclick = () => openLightbox(i);
+    item.innerHTML = `
+      <img src="${p.src}" alt="${p.caption}" loading="lazy">
+      <div class="photo-overlay">
+        <div class="photo-caption">${p.caption}</div>
+        <a class="photo-download-icon" href="${p.src}" download onclick="event.stopPropagation()" aria-label="Download photo">
+          <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+        </a>
+      </div>
+    `;
+    grid.appendChild(item);
+  });
+}
+
+const IMG_EXT = /\.(jpe?g|png|webp|gif)$/i;
+
+fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER_PATH}?ref=${REPO_BRANCH}`)
+  .then(res => res.ok ? res.json() : Promise.reject(res.status))
+  .then(files => {
+    photos = files
+      .filter(f => f.type === 'file' && IMG_EXT.test(f.name))
+      .sort((a, b) => b.name.localeCompare(a.name)) // newest filename first
+      .map(f => ({ src: `${FOLDER_PATH}/${f.name}`, caption: captionFromFilename(f.name) }));
+    renderGrid();
+  })
+  .catch(() => {
+    // Falls back to the coming-soon message if the API call fails
+    // (e.g. repo not public yet, or REPO_OWNER/REPO_NAME not set)
+    renderGrid();
+  });
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+let currentLb = 0;
+function openLightbox(idx) {
+  currentLb = idx;
+  const p = photos[idx];
+  document.getElementById('lb-img').src = p.src;
+  document.getElementById('lb-cap').textContent = p.caption;
+  document.getElementById('lb-download').href = p.src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeLightboxBg(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+function lbNav(dir) {
+  if (photos.length === 0) return;
+  currentLb = (currentLb + dir + photos.length) % photos.length;
+  openLightbox(currentLb);
+}
+document.addEventListener('keydown', e => {
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'Escape')     closeLightbox();
+  }
+});
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+function toggleNav() {
+  var navLinks = document.getElementById('nav-links');
+  navLinks.classList.toggle('open');
+  document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.nav-links a:not(.nav-contact-btn)').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
+});
+</script>
+
+</body>
+</html>
