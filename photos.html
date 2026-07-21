@@ -513,8 +513,8 @@ footer {
 // ── Photos: auto-loaded from the "photo-gallery" folder in your repo ──────────
 // Just drop new images into assets/photo-gallery/ and push — no code edits needed.
 // TODO: set these two values to your repo, then this pulls the folder automatically:
-const REPO_OWNER  = 'YOUR-GITHUB-USERNAME';
-const REPO_NAME   = 'YOUR-REPO-NAME';
+const REPO_OWNER  = 'johnconnorannand-cmyk';
+const REPO_NAME   = 'Cruisers-Website';
 const REPO_BRANCH = 'main';
 const FOLDER_PATH = 'assets/photo-gallery';
 
@@ -531,7 +531,7 @@ function titleCase(str) {
 // Auto-credit rules: any filename matching a pattern below gets credited automatically,
 // no renaming needed. Add more rules here as more photographers contribute.
 const CREDIT_RULES = [
-  { pattern: /^-?ASD\d+/i, name: 'waitupsienna', url: 'https://www.instagram.com/waitupsienna/' },
+  { pattern: /ASD\d+/i, name: 'waitupsienna', url: 'https://www.instagram.com/waitupsienna/' },
   { pattern: /050A\d+|ps_[0-9a-f]{8}/i, name: 'dev.franz', url: 'https://www.instagram.com/dev.franz/' }
 ];
 
@@ -594,13 +594,22 @@ function renderGrid() {
 
 const IMG_EXT = /\.(jpe?g|png|webp|gif)$/i;
 
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER_PATH}?ref=${REPO_BRANCH}`)
   .then(res => res.ok ? res.json() : Promise.reject(res.status))
   .then(files => {
-    photos = files
-      .filter(f => f.type === 'file' && IMG_EXT.test(f.name))
-      .sort((a, b) => b.name.localeCompare(a.name)) // newest filename first
-      .map(f => ({ src: `${FOLDER_PATH}/${f.name}`, ...parseFilename(f.name) }));
+    photos = shuffle(
+      files
+        .filter(f => f.type === 'file' && IMG_EXT.test(f.name))
+        .map(f => ({ src: `${FOLDER_PATH}/${f.name}`, ...parseFilename(f.name) }))
+    );
     renderGrid();
   })
   .catch(() => {
