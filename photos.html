@@ -215,6 +215,17 @@ nav {
   text-transform: uppercase;
   color: var(--cream);
 }
+.photo-credit {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  margin-top: 3px;
+  display: inline-block;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a.photo-credit:hover { color: var(--cream); text-decoration: underline; }
 .photo-download-icon {
   width: 28px; height: 28px;
   border-radius: 50%;
@@ -308,6 +319,18 @@ nav {
   text-transform: uppercase;
   color: var(--blue);
 }
+.lightbox-credit {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(1,18,153,0.6);
+  margin-top: 4px;
+}
+.lightbox-credit a {
+  color: rgba(1,18,153,0.6);
+  transition: color 0.2s ease;
+}
+.lightbox-credit a:hover { color: var(--blue); text-decoration: underline; }
 .lightbox-download {
   display: inline-block;
   padding: 10px 20px;
@@ -449,7 +472,10 @@ footer {
     <button class="lightbox-close" onclick="closeLightbox()">✕ Close</button>
     <img class="lightbox-img" id="lb-img" src="" alt="">
     <div class="lightbox-body">
-      <div class="lightbox-cap" id="lb-cap"></div>
+      <div>
+        <div class="lightbox-cap" id="lb-cap"></div>
+        <div class="lightbox-credit" id="lb-credit"></div>
+      </div>
       <a class="lightbox-download" id="lb-download" href="" download>Download →</a>
     </div>
     <div class="lightbox-nav">
@@ -495,8 +521,45 @@ const FOLDER_PATH = 'assets/photo-gallery';
 let photos = [];
 const grid = document.getElementById('photo-grid');
 
-function captionFromFilename(name) {
-  return name.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+// Filename convention: "caption--photographer-name.jpg" (manual override, always wins)
+// The "--photographer-name" part is optional — if you leave it off, auto-credit rules below still apply.
+// Example: "tuesday-rides-july--emily-chen.jpg" → caption "Tuesday Rides July", credit "Emily Chen"
+function titleCase(str) {
+  return str.replace(/[-_]+/g, ' ').trim().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// Auto-credit rules: any filename matching a pattern below gets credited automatically,
+// no renaming needed. Add more rules here as more photographers contribute.
+const CREDIT_RULES = [
+  { pattern: /^-?ASD\d+/i, name: 'waitupsienna', url: 'https://www.instagram.com/waitupsienna/' },
+  { pattern: /050A\d+|ps_[0-9a-f]{8}/i, name: 'dev.franz', url: 'https://www.instagram.com/dev.franz/' }
+];
+
+function autoCredit(base) {
+  for (const rule of CREDIT_RULES) {
+    if (rule.pattern.test(base)) return { name: rule.name, url: rule.url };
+  }
+  return null;
+}
+
+function parseFilename(name) {
+  const base = name.replace(/\.[^/.]+$/, '');
+  const [captionPart, creditPart] = base.split('--');
+
+  // Manual "--name" in the filename overrides the auto-credit rules
+  const matchedAutoCredit = !creditPart && autoCredit(base);
+  const credit = creditPart
+    ? { name: titleCase(creditPart), url: null }
+    : matchedAutoCredit;
+
+  // Skip a caption for raw camera filenames (no readable words in them),
+  // or anything that was auto-credited by filename pattern (also a raw filename).
+  const looksLikeCameraCode = /^-?[a-z]{2,4}\d{3,}(-\d+)?$/i.test(base) || !!matchedAutoCredit;
+
+  return {
+    caption: looksLikeCameraCode ? '' : titleCase(captionPart),
+    credit
+  };
 }
 
 function renderGrid() {
@@ -510,9 +573,16 @@ function renderGrid() {
     item.className = 'photo-item';
     item.onclick = () => openLightbox(i);
     item.innerHTML = `
-      <img src="${p.src}" alt="${p.caption}" loading="lazy">
+      <img src="${p.src}" alt="${p.caption || 'Cruisers photo'}" loading="lazy">
       <div class="photo-overlay">
-        <div class="photo-caption">${p.caption}</div>
+        <div>
+          ${p.caption ? `<div class="photo-caption">${p.caption}</div>` : ''}
+          ${p.credit ? (
+            p.credit.url
+              ? `<a class="photo-credit" href="${p.credit.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📸 ${p.credit.name}</a>`
+              : `<div class="photo-credit">📸 ${p.credit.name}</div>`
+          ) : ''}
+        </div>
         <a class="photo-download-icon" href="${p.src}" download onclick="event.stopPropagation()" aria-label="Download photo">
           <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
         </a>
@@ -530,7 +600,7 @@ fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER
     photos = files
       .filter(f => f.type === 'file' && IMG_EXT.test(f.name))
       .sort((a, b) => b.name.localeCompare(a.name)) // newest filename first
-      .map(f => ({ src: `${FOLDER_PATH}/${f.name}`, caption: captionFromFilename(f.name) }));
+      .map(f => ({ src: `${FOLDER_PATH}/${f.name}`, ...parseFilename(f.name) }));
     renderGrid();
   })
   .catch(() => {
@@ -546,6 +616,11 @@ function openLightbox(idx) {
   const p = photos[idx];
   document.getElementById('lb-img').src = p.src;
   document.getElementById('lb-cap').textContent = p.caption;
+  document.getElementById('lb-credit').innerHTML = p.credit
+    ? (p.credit.url
+        ? `<a href="${p.credit.url}" target="_blank" rel="noopener">📸 ${p.credit.name}</a>`
+        : `📸 ${p.credit.name}`)
+    : '';
   document.getElementById('lb-download').href = p.src;
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
