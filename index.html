@@ -916,10 +916,7 @@ footer {
 
 <!-- SECTION 2: MASTHEAD -->
 <section class="masthead">
-  <video class="masthead-video" id="hero-video" autoplay muted loop playsinline>
-    <source src="assets/video/hero-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
-    <source src="assets/video/hero-desktop.mp4" type="video/mp4">
-  </video>
+  <video class="masthead-video" id="hero-video" autoplay muted loop playsinline></video>
   <div class="masthead-fade"></div>
 
   <!-- Volume toggle -->
@@ -1054,13 +1051,20 @@ footer {
 </div><!-- /photo-bg-wrap -->
 
 <script>
-// Mobile video swap fallback for iOS Safari
+// Randomly pick between the animation hero and the Cruisers video hero,
+// then load the correct file for the current breakpoint (desktop vs mobile).
 (function() {
-  if (window.innerWidth > 768) return;
+  var HERO_SETS = [
+    { desktop: 'assets/video/hero-desktop.mp4',            mobile: 'assets/video/hero-mobile.mp4' },   // animation
+    { desktop: 'assets/video/Cruisers_Hero_Desktop-.mp4',  mobile: 'assets/video/hero-mobile_1.mp4' }  // Cruisers footage
+  ];
+  var chosen = HERO_SETS[Math.floor(Math.random() * HERO_SETS.length)];
+  var isMobile = window.innerWidth <= 768;
+  var src = isMobile ? chosen.mobile : chosen.desktop;
+
   var video = document.getElementById('hero-video');
   if (!video) return;
-  // Force load the mobile source on small screens
-  video.innerHTML = '<source src="assets/video/hero-mobile.mp4" type="video/mp4">';
+  video.innerHTML = '<source src="' + src + '" type="video/mp4">';
   video.load();
   video.play().catch(function(){});
 })();
