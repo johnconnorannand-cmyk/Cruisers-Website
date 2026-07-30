@@ -1085,16 +1085,11 @@ footer {
 </div><!-- /photo-bg-wrap -->
 
 <script>
-// Randomly pick between the animation hero and the Cruisers video hero,
-// then load the correct file for the current breakpoint (desktop vs mobile).
+// Always load the Cruisers footage hero video, correct file for the breakpoint.
 (function() {
-  var HERO_SETS = [
-    { desktop: 'assets/video/hero-desktop.mp4',            mobile: 'assets/video/hero-mobile.mp4' },   // animation
-    { desktop: 'assets/video/Cruisers_Hero_Desktop-.mp4',  mobile: 'assets/video/hero-mobile_1.mp4' }  // Cruisers footage
-  ];
-  var chosen = HERO_SETS[Math.floor(Math.random() * HERO_SETS.length)];
+  var HERO = { desktop: 'assets/video/Cruisers_Hero_Desktop-.mp4', mobile: 'assets/video/hero-mobile_1.mp4' };
   var isMobile = window.innerWidth <= 768;
-  var src = isMobile ? chosen.mobile : chosen.desktop;
+  var src = isMobile ? HERO.mobile : HERO.desktop;
 
   var video = document.getElementById('hero-video');
   if (!video) return;
